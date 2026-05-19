@@ -11,11 +11,11 @@
        isLoading = true;
     
     try {
-    const response = await fetch('http://localhost/Library-Management/backend/api.php/login?t=' + Date.now(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' },
-        body: JSON.stringify({ email, password })
-    });
+     const response = await fetch('http://localhost/Library-System/backend/api.php/login?t=' + Date.now(), {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' },
+         body: JSON.stringify({ email, password })
+     });
 
     if (!response.ok) {
         const errorData = await response.json();

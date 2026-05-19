@@ -19,17 +19,17 @@
   });
 
   async function fetchBooks() {
-    const response = await fetch('http://localhost/Library-Management/backend/api.php/books');
+    const response = await fetch('http://localhost/Library-System/backend/api.php/books');
     books = await response.json();
   }
 
   async function fetchBorrowedBooks() {
-    const response = await fetch('http://localhost/Library-Management/backend/api.php/borrowed');
+    const response = await fetch('http://localhost/Library-System/backend/api.php/borrowed');
     borrowedBooks = await response.json();
   }
 
   async function addBook(book: Omit<Book, 'id'>) {
-    const response = await fetch('http://localhost/Library-Management/backend/api.php/books', {
+    const response = await fetch('http://localhost/Library-System/backend/api.php/books', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(book)
@@ -39,7 +39,7 @@
   }
 
   async function borrowBook(bookId: number, borrower: string) {
-    const response = await fetch('http://localhost/Library-Management/backend/api.php/borrow', {
+    const response = await fetch('http://localhost/Library-System/backend/api.php/borrow', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ book_id: bookId, user_id: $auth?.id })  // Using optional chaining
@@ -48,7 +48,7 @@
   }
 
   async function returnBook(borrowId: number) {
-    const response = await fetch('http://localhost/Library-Management/backend/api.php/return', {
+    const response = await fetch('http://localhost/Library-System/backend/api.php/return', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ borrow_id: borrowId })

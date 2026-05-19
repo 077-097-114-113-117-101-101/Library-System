@@ -14,11 +14,11 @@
        }
     
        try {
-         const response = await fetch('http://localhost/Library-Management/backend/api.php/register', {
-           method: 'POST',
-           headers: { 'Content-Type': 'application/json' },
-           body: JSON.stringify({ name, email, password })
-         });
+          const response = await fetch('http://localhost/Library-System/backend/api.php/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+          });
     
          const data = await response.json();
     

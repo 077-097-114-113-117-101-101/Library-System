@@ -1,15 +1,20 @@
 <?php
-// Handle CORS
-$allowedOrigins = ['http://localhost:5173', 'http://localhost:5174']; // Allowed origins
+// Handle CORS - must be at the very top before any output
+$allowedOrigins = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost'];
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+// Always set CORS headers for allowed origins
 if (in_array($origin, $allowedOrigins)) {
     header('Access-Control-Allow-Origin: ' . $origin);
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-    header('Access-Control-Allow-Headers: Content-Type, Authorization');
+    header('Access-Control-Allow-Headers: Content-Type, Authorization, Cache-Control');
+    header('Access-Control-Max-Age: 86400'); // Cache preflight for 24 hours
 }
+
+// Handle preflight OPTIONS request immediately
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
-    exit(0);  // End preflight request
+    exit(0);
 }
 
 // Include required files
@@ -23,9 +28,18 @@ header('Pragma: no-cache');
 $method = $_SERVER['REQUEST_METHOD'];
 
 $requestUri = $_SERVER['REQUEST_URI'];
-$basePath = '/Library-Management/backend/api.php/';
+// Support both Library-Management and Library-System paths
+$basePath = '/Library-System/backend/api.php/';
 $path = str_replace($basePath, '', parse_url($requestUri, PHP_URL_PATH));
+// Also try Library-Management path for backwards compatibility
+if (empty($path) || $path === parse_url($requestUri, PHP_URL_PATH)) {
+    $basePath = '/Library-Management/backend/api.php/';
+    $path = str_replace($basePath, '', parse_url($requestUri, PHP_URL_PATH));
+}
 $request = explode('/', trim($path, '/'));
+
+// Debug: Log the request for troubleshooting
+// error_log("Request URI: $requestUri, Path: $path, Request: " . print_r($request, true));
 
 $input = json_decode(file_get_contents('php://input'), true);
 

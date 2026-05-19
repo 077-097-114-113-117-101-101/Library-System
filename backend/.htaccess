@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Handle OPTIONS preflight requests - must be first
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ api.php [QSA,L]
+
+# If the requested filename exists, simply serve it.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ api.php/$1 [QSA,L]
